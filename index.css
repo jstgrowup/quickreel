@@ -27,7 +27,7 @@ body {
     top: 100px;
     left: 400px;
 }
-/* Optional: Style for the file input button */
+
 #videoInput::file-selector-button {
     background-color: #4caf50;
     color: white;
