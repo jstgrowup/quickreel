@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f8f8;
+}
+
+#videoInput {
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+#video {
+    border: 10px solid red;
+    max-width: 720px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    position: relative;
+}
+#overlay {
+    position: absolute;
+    top: 100px;
+    left: 400px;
+}
+/* Optional: Style for the file input button */
+#videoInput::file-selector-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
