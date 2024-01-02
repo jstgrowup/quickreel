@@ -50,7 +50,7 @@ function App() {
       faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
       const fabriccanvas = new fabric.Canvas(canvasRef.current);
       resizedDetections.map((ele) => {
-        var rect = new fabric.Rect({
+        let tempRect = new fabric.Rect({
           width: ele.alignedRect._box._width,
           height: ele.alignedRect._box._height,
           left: ele.alignedRect._box._x,
@@ -59,7 +59,7 @@ function App() {
           strokeWidth: 5,
           stroke: "red",
         });
-        fabriccanvas.add(rect);
+        fabriccanvas.add(tempRect);
       });
     }, 1000);
   };
