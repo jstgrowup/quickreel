@@ -57,7 +57,7 @@ function App() {
           top: ele.alignedRect._box._y,
           fill: "transparent",
           strokeWidth: 5,
-          stroke: "red",
+          stroke: "blue",
         });
         fabriccanvas.add(tempRect);
       });
