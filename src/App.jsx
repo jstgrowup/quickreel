@@ -45,9 +45,6 @@ function App() {
         height: 650,
       });
 
-      faceapi.draw.drawDetections(canvas, resizedDetections);
-      faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-      faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
       const fabriccanvas = new fabric.Canvas(canvasRef.current);
       resizedDetections.map((ele) => {
         let tempRect = new fabric.Rect({
@@ -56,8 +53,8 @@ function App() {
           left: ele.alignedRect._box._x,
           top: ele.alignedRect._box._y,
           fill: "transparent",
-          strokeWidth: 5,
-          stroke: "blue",
+          strokeWidth: 2,
+          stroke: "green",
         });
         fabriccanvas.add(tempRect);
       });
