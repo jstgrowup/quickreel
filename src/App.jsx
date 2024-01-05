@@ -15,7 +15,6 @@ function App() {
     await Promise.all([
       faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
       faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
-      faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
       faceapi.nets.faceExpressionNet.loadFromUri("/models"),
     ]).then(detectFaces);
   };
@@ -29,12 +28,11 @@ function App() {
     }
   };
 
-  const detectFaces = () => {
+  const detectFaces = async () => {
     setInterval(async () => {
       const detections = await faceapi
         .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
-        .withFaceLandmarks()
-        .withFaceExpressions();
+        .withFaceLandmarks();
       const canvas = canvasRef.current;
       faceapi.matchDimensions(canvas, {
         width: 940,
@@ -45,7 +43,7 @@ function App() {
         height: 650,
       });
 
-      const fabriccanvas = new fabric.Canvas(canvasRef.current);
+      const fabriccanvas = new fabric.Canvas(canvas);
       resizedDetections.map((ele) => {
         let tempRect = new fabric.Rect({
           width: ele.alignedRect._box._width,
@@ -75,13 +73,7 @@ function App() {
   return (
     <>
       <div className="myapp">
-        <video
-          ref={videoRef}
-          crossOrigin="anonymous"
-          autoPlay
-          controls
-          id="video"
-        />
+        <video ref={videoRef} autoPlay controls id="video" />
         <canvas ref={canvasRef} width="10" height="200" id="overlay" />
       </div>
       <div id="btn">
