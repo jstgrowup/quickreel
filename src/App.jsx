@@ -6,7 +6,7 @@ function App() {
   const videoRef = useRef();
   const inputRef = useRef();
   const canvasRef = useRef();
-
+  const fabricCanvas = new fabric.Canvas();
   const [isPlaying, setIsPlaying] = useState(false);
   useEffect(() => {
     loadModels();
@@ -16,7 +16,7 @@ function App() {
       faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
       faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
       faceapi.nets.faceExpressionNet.loadFromUri("/models"),
-    ]).then(detectFaces);
+    ]).then(loadCanvas);
   };
   const handleFileChange = () => {
     const file = inputRef.current.files[0];
@@ -24,40 +24,47 @@ function App() {
       const videoBlob = URL.createObjectURL(file);
       videoRef.current.src = videoBlob;
       videoRef.current.play();
-      detectFaces();
+      loadCanvas();
     }
   };
-
-  const detectFaces = async () => {
-    setInterval(async () => {
-      const detections = await faceapi
-        .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
-        .withFaceLandmarks();
-      const canvas = canvasRef.current;
-      faceapi.matchDimensions(canvas, {
-        width: 940,
-        height: 650,
-      });
-      const resizedDetections = faceapi.resizeResults(detections, {
-        width: 940,
-        height: 650,
-      });
-
-      const fabriccanvas = new fabric.Canvas(canvas);
-      resizedDetections.map((ele) => {
-        let tempRect = new fabric.Rect({
-          width: ele.alignedRect._box._width,
-          height: ele.alignedRect._box._height,
-          left: ele.alignedRect._box._x,
-          top: ele.alignedRect._box._y,
-          fill: "transparent",
-          strokeWidth: 2,
-          stroke: "green",
-        });
-        fabriccanvas.add(tempRect);
-      });
-    }, 1000);
+  const loadCanvas = () => {
+    var canvas = new fabric.Canvas(canvasRef.current);
+    var video1 = new fabric.Rect({
+      fill: "transparent",
+      width: 400,
+      height: 400,
+      strokeWidth: 2,
+      stroke: "green",
+    });
+    canvas.add(video1);
+    video1.getElement().play();
   };
+
+  // const detectFaces = async () => {
+  //   setInterval(async () => {
+  //     const detections = await faceapi
+  //       .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
+  //       .withFaceLandmarks();
+  //     faceapi.matchDimensions(canvas, {
+  //       width: 940,
+  //       height: 650,
+  //     });
+  //     const resizedDetections = faceapi.resizeResults(detections, {
+  //       width: 940,
+  //       height: 650,
+  //     });
+  //     const canvas = canvasRef.current;
+  //     const fabriccanvas = new fabric.Canvas("overlay");
+  //     let tempRect = new fabric.Rect({
+  //       width: 200,
+  //       height: 100,
+  //       left: 100,
+  //       top: 75,
+  //       fill: "orange",
+  //     });
+  //     fabriccanvas.add(tempRect);
+  //   }, 100);
+  // };
   const togglePlayPause = () => {
     const video = videoRef.current;
     if (video) {
@@ -73,8 +80,8 @@ function App() {
   return (
     <>
       <div className="myapp">
+        <canvas ref={canvasRef} width="1400" height="600" id="overlay"></canvas>
         <video ref={videoRef} autoPlay controls id="video" />
-        <canvas ref={canvasRef} width="10" height="200" id="overlay" />
       </div>
       <div id="btn">
         <input
